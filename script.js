@@ -10,6 +10,20 @@ document.addEventListener('mousemove', e => {
   dot.style.top = my + 'px';
 });
 
+// Load social profile links from config
+if (window.siteConfig?.socialLinks) {
+  document.querySelectorAll('.social-icon[data-link-key]').forEach(el => {
+    const key = el.dataset.linkKey;
+    const url = siteConfig.socialLinks[key];
+    if (url) {
+      el.href = url;
+      el.target = '_blank';
+      el.rel = 'noopener noreferrer';
+    }
+  });
+}
+
+
 function animRing() {
   rx += (mx - rx) * 0.12;
   ry += (my - ry) * 0.12;
