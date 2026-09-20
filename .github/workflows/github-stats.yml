@@ -1,0 +1,39 @@
+name: Update GitHub stats
+
+on:
+  schedule:
+    - cron: '17 3 * * *' # once a day, 03:17 UTC
+  workflow_dispatch: # lets you run it manually from the Actions tab
+
+permissions:
+  contents: write
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Fetch stats
+        run: node scripts/fetch-github.mjs
+        env:
+          GH_LOGIN: muhammadali-imran
+          # Optional: add a repo secret named GH_STATS_TOKEN (classic PAT with read:user) to also count
+          # private contributions. Without it, the built-in token is used and only public activity shows.
+          GH_TOKEN: ${{ secrets.GH_STATS_TOKEN || secrets.GITHUB_TOKEN }}
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- src/data/github-stats.json; then
+            echo "Nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/data/github-stats.json
+          git commit -m "chore: update GitHub stats"
+          git push

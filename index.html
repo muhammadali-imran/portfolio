@@ -1,10 +1,64 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Muhammad Ali</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Muhammad Ali | Full Stack Developer</title>
+    <meta
+      name="description"
+      content="Muhammad Ali is a software engineering student at NUST and a full stack developer (MERN and Django) building AI-powered apps and automation."
+    />
+    <meta name="author" content="Muhammad Ali" />
+    <meta name="theme-color" content="#07070f" />
+    <link rel="canonical" href="%VITE_SITE_URL%/" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Muhammad Ali | Full Stack Developer" />
+    <meta
+      property="og:description"
+      content="Full stack developer (MERN and Django) building AI-powered apps and automation. Software engineering student at NUST."
+    />
+    <meta property="og:url" content="%VITE_SITE_URL%/" />
+    <meta property="og:image" content="%VITE_SITE_URL%/og-image.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Muhammad Ali | Full Stack Developer" />
+    <meta
+      name="twitter:description"
+      content="Full stack developer (MERN and Django) building AI-powered apps and automation."
+    />
+    <meta name="twitter:image" content="%VITE_SITE_URL%/og-image.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Muhammad Ali",
+        "jobTitle": "Full Stack Developer",
+        "url": "%VITE_SITE_URL%/",
+        "sameAs": [
+          "https://github.com/muhammadali-imran",
+          "https://www.linkedin.com/in/muhammadali-imran1972/"
+        ],
+        "knowsAbout": ["React", "Node.js", "Django", "FastAPI", "Python", "AI automation", "Cybersecurity"]
+      }
+    </script>
+
+    <!-- Set the theme before first paint to avoid a flash -->
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t !== 'light' && t !== 'dark') {
+            t = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+          }
+          document.documentElement.dataset.theme = t;
+          document.documentElement.style.colorScheme = t;
+        } catch (e) {
+          document.documentElement.dataset.theme = 'dark';
+        }
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
