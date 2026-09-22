@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useCallback } from 'react';
 import { gsap, useGSAP } from '../../lib/gsap';
 import { prefersReducedMotion } from '../../lib/motion';
 import { profile } from '../../data/profile';
@@ -14,30 +14,55 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
   const indicator = useRef(null);
   const items = useRef({});
 
-  const place = (duration) => {
-    const el = items.current[active];
-    const ind = indicator.current;
-    if (!el || !ind || !el.offsetHeight) return;
-    gsap.to(ind, { y: el.offsetTop, height: el.offsetHeight, opacity: 1, duration, ease: 'power3.out' });
-  };
+  const place = useCallback(
+    (duration) => {
+      const el = items.current[active];
+      const ind = indicator.current;
+      if (!el || !ind || !el.offsetHeight) return;
 
-  // Slide the highlight to the active link.
-  useGSAP(() => place(prefersReducedMotion() ? 0 : 0.45), { dependencies: [active] });
+      gsap.to(ind, {
+        y: el.offsetTop,
+        height: el.offsetHeight,
+        opacity: 1,
+        duration,
+        ease: 'power3.out',
+        overwrite: 'auto',
+      });
+    },
+    [active]
+  );
 
-  // Re-measure when the sidebar changes size (e.g. crossing the xl breakpoint).
+  // Slide the highlight smoothly to the active link.
+  useGSAP(
+    () => {
+      place(prefersReducedMotion() ? 0 : 0.45);
+    },
+    { dependencies: [active] },
+  );
+
+  // Re-measure when the sidebar changes size (e.g. crossing the xl breakpoint)
   useEffect(() => {
     const el = nav.current;
     if (!el || typeof ResizeObserver === 'undefined') return undefined;
+
     const observer = new ResizeObserver(() => place(0));
     observer.observe(el);
+
     return () => observer.disconnect();
-  });
+  }, [place]);
 
   // Links slide in once the intro has finished.
   useGSAP(
     () => {
       if (!ready || prefersReducedMotion()) return;
-      gsap.from('.nav-item', { x: -24, autoAlpha: 0, duration: 0.6, stagger: 0.06, ease: 'power3.out', delay: 0.3 });
+      gsap.from('.nav-item', {
+        x: -24,
+        autoAlpha: 0,
+        duration: 0.6,
+        stagger: 0.06,
+        ease: 'power3.out',
+        delay: 0.3,
+      });
     },
     { scope: nav, dependencies: [ready] },
   );
@@ -71,7 +96,6 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
             absolute inset-x-3 top-0 rounded-2xl bg-neo-purple/12 opacity-0 
             ring-1 ring-neo-purple/30 xl:inset-x-4
           "
-          style={{ height: 0 }}
         />
         <ul className="flex flex-col gap-1">
           {NAV.map(({ id, label, Icon }) => (
@@ -117,4 +141,3 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
     </aside>
   );
 }
-
