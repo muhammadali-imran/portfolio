@@ -59,6 +59,11 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
           <span className="text-grad">{profile.monogram}</span>
           <span className="text-neo-mint">.</span>
         </a>
+        
+        <div className="flex justify-center xl:justify-start">
+          <ThemeToggle />
+        </div>
+        
       </div>
 
       <nav ref={nav} aria-label="Primary" className="relative mt-12 px-3 xl:px-4">
@@ -107,10 +112,6 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
           </span>
           <kbd className="kbd hidden xl:inline">Ctrl K</kbd>
         </button>
-
-        <div className="flex justify-center xl:justify-start">
-          <ThemeToggle />
-        </div>
 
         <CvButton railLabel className="w-full px-0! xl:px-5!" />
 
