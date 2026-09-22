@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { profile, whatsappUrl } from '../../data/profile';
+import { profile } from '../../data/profile';
 import { scrollToId } from '../../lib/motion';
 import { useTheme } from '../../hooks/useTheme';
 import { NAV } from './nav';
@@ -35,8 +35,21 @@ function Dialog({ onClose }) {
         },
       });
     }
-    if (profile.whatsapp) {
-      list.push({ id: 'wa', group: 'Contact', label: 'Message on WhatsApp', run: open(whatsappUrl()) });
+    if (profile.discord) {
+      list.push({
+        id: 'discord',
+        group: 'Contact',
+        label: 'Copy Discord username',
+        keepOpen: true,
+        run: async () => {
+          try {
+            await navigator.clipboard.writeText(profile.discord);
+            setNotice('Discord username copied');
+          } catch {
+            setNotice('Could not copy. Use the contact section instead.');
+          }
+        },
+      });
     }
     if (profile.email) {
       list.push({
@@ -168,3 +181,4 @@ export default function CommandPalette({ open, onClose }) {
   if (!open) return null;
   return <Dialog onClose={onClose} />;
 }
+

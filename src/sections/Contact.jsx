@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
-import { FaGithub, FaLinkedinIn, FaWhatsapp } from 'react-icons/fa';
-import { profile, whatsappUrl } from '../data/profile';
+import { FaDiscord, FaGithub, FaLinkedinIn } from 'react-icons/fa';
+import { profile } from '../data/profile';
 import SectionHeading from '../components/ui/SectionHeading';
 import Button from '../components/ui/Button';
 import CvButton from '../components/ui/CvButton';
@@ -13,13 +13,30 @@ export default function Contact() {
   const root = useRef(null);
   const [status, setStatus] = useState('idle'); // idle | sending | success | error
   const [message, setMessage] = useState('');
+  const [discordCopied, setDiscordCopied] = useState(false);
   useBatchReveal(root, '.reveal');
 
+  const copyDiscord = async () => {
+    try {
+      await navigator.clipboard.writeText(profile.discord);
+      setDiscordCopied(true);
+      setTimeout(() => setDiscordCopied(false), 1500);
+    } catch {
+      /* clipboard unavailable; the username is still shown on the page */
+    }
+  };
+
   const links = [
-    profile.email && { label: 'Email', value: profile.email, href: `mailto:${profile.email}`, Icon: MailIcon },
-    profile.whatsapp && { label: 'WhatsApp', value: `+${profile.whatsapp}`, href: whatsappUrl(), Icon: FaWhatsapp },
-    { label: 'LinkedIn', value: 'muhammadali-imran1972', href: profile.linkedin, Icon: FaLinkedinIn },
-    { label: 'GitHub', value: profile.githubUser, href: profile.github, Icon: FaGithub },
+    profile.email && { id: 'email', label: 'Email', value: profile.email, href: `mailto:${profile.email}`, Icon: MailIcon },
+    profile.discord && {
+      id: 'discord',
+      label: 'Discord',
+      value: discordCopied ? 'Copied!' : profile.discord,
+      onClick: copyDiscord,
+      Icon: FaDiscord,
+    },
+    { id: 'linkedin', label: 'LinkedIn', value: 'muhammadali-imran1972', href: profile.linkedin, Icon: FaLinkedinIn },
+    { id: 'github', label: 'GitHub', value: profile.githubUser, href: profile.github, Icon: FaGithub },
   ].filter(Boolean);
 
   async function onSubmit(event) {
@@ -72,13 +89,9 @@ export default function Contact() {
         <div className="mt-14 grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div className="reveal">
             <ul className="divide-y divide-line border-y border-line">
-              {links.map(({ label, value, href, Icon }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    className="group flex items-center gap-4 py-5 transition-colors hover:text-neo-purple"
-                  >
+              {links.map(({ id, label, value, href, Icon, onClick }) => {
+                const content = (
+                  <>
                     <span className="grid size-11 shrink-0 place-items-center rounded-full border border-line text-neo-purple transition-colors group-hover:bg-neo-purple/10">
                       <Icon className="size-5" />
                     </span>
@@ -86,14 +99,35 @@ export default function Contact() {
                       <span className="block text-sm text-muted">{label}</span>
                       <span className="block truncate font-medium">{value}</span>
                     </span>
-                  </a>
-                </li>
-              ))}
+                  </>
+                );
+                return (
+                  <li key={id}>
+                    {href ? (
+                      <a
+                        href={href}
+                        {...(href.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                        className="group flex items-center gap-4 py-5 transition-colors hover:text-neo-purple"
+                      >
+                        {content}
+                      </a>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={onClick}
+                        className="group flex w-full items-center gap-4 py-5 text-left transition-colors hover:text-neo-purple"
+                      >
+                        {content}
+                      </button>
+                    )}
+                  </li>
+                );
+              })}
             </ul>
 
-            {import.meta.env.DEV && (!profile.email || !profile.whatsapp) && (
+            {import.meta.env.DEV && (!profile.email || !profile.discord) && (
               <p className="mt-4 rounded-xl border border-dashed border-line p-3 text-sm text-muted">
-                Dev note: set VITE_CONTACT_EMAIL and VITE_WHATSAPP_NUMBER in .env to show those links.
+                Dev note: set VITE_CONTACT_EMAIL and VITE_DISCORD_USERNAME in .env to show those links.
               </p>
             )}
 
