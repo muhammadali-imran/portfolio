@@ -58,6 +58,7 @@ GH_TOKEN=your_token npm run stats
 
 ## Project structure
 
+'''
 ├── .github/workflows/github-stats.yml   # daily stats refresh
 ├── public/                              # favicon, og-image.png, robots.txt, your CV PDF
 ├── scripts/fetch-github.mjs             # GitHub stats fetcher
@@ -74,6 +75,7 @@ GH_TOKEN=your_token npm run stats
 │   └── sections/                        # Hero, About, Stack, Projects, GitHubActivity, Contact
 ├── index.html                           # SEO tags and the no-flash theme script
 └── vite.config.js
+'''
 
 ## License
 
