@@ -1,0 +1,342 @@
+@import "tailwindcss";
+
+/* Dark mode is driven by <html data-theme="dark|light"> instead of the OS setting. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+/* ------------------------------------------------------------------
+   Theme tokens. Light is the base; dark overrides it.
+   Accents are darker in light mode so text stays readable.
+------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+  --bg: #f7f6ff;
+  --surface: #ffffff;
+  --surface2: #eeebff;
+  --line: #dad5f5;
+  --ink: #14122b;
+  --muted: #5a5680;
+  --purple: #6d3cf0;
+  --blue: #2058e8;
+  --green: #047857;
+  --mint: #10b981;
+  --red: #e11d48;
+  --btn-from: #6d3cf0;
+  --btn-to: #2058e8;
+  --btn-glow: 0 12px 30px -12px rgb(109 60 240 / 0.6);
+  --card-glow: 0 28px 60px -34px rgb(109 60 240 / 0.45);
+  --grid: rgb(109 60 240 / 0.07);
+  --blob-opacity: 0.32;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #07070f;
+  --surface: #0e0e1e;
+  --surface2: #16162b;
+  --line: #2a2650;
+  --ink: #f2f1ff;
+  --muted: #a3a1c9;
+  --purple: #a084ff;
+  --blue: #4d8dff;
+  --green: #22f0a8;
+  --mint: #22f0a8;
+  --red: #ff4d78;
+  --btn-from: #7c3aed;
+  --btn-to: #2563eb;
+  --btn-glow: 0 0 34px -6px rgb(139 92 246 / 0.65);
+  --card-glow: 0 0 60px -30px rgb(139 92 246 / 0.7);
+  --grid: rgb(139 92 246 / 0.1);
+  --blob-opacity: 0.3;
+}
+
+/* Expose the tokens as Tailwind utilities: bg-canvas, text-ink, border-line, text-neo-purple ... */
+@theme inline {
+  --color-canvas: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface2: var(--surface2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-neo-purple: var(--purple);
+  --color-neo-blue: var(--blue);
+  --color-neo-green: var(--green);
+  --color-neo-mint: var(--mint);
+  --color-neo-red: var(--red);
+  --font-display: "Barlow Condensed", "Arial Narrow", Impact, sans-serif;
+  --font-sans: "Outfit Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+@layer base {
+  *,
+  ::before,
+  ::after {
+    border-color: var(--line);
+  }
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 5rem;
+  }
+  @media (min-width: 1024px) {
+    html {
+      scroll-padding-top: 0;
+    }
+  }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  button:not(:disabled),
+  [role="button"] {
+    cursor: pointer;
+  }
+  ::selection {
+    background: color-mix(in srgb, var(--purple) 35%, transparent);
+  }
+  :focus-visible {
+    outline: 2px solid var(--blue);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+}
+
+@layer components {
+  /* Gradient text: purple, blue, then green. */
+  .text-grad {
+    background-image: linear-gradient(100deg, var(--purple) 0%, var(--blue) 55%, var(--mint) 100%);
+    background-size: 160% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: grad-pan 9s ease-in-out infinite alternate;
+  }
+
+  .btn-primary {
+    background-image: linear-gradient(100deg, var(--btn-from), var(--btn-to));
+    box-shadow: var(--btn-glow);
+  }
+  .btn-primary:hover {
+    filter: brightness(1.12);
+  }
+
+  .field {
+    width: 100%;
+    border-radius: 0.85rem;
+    border: 1px solid var(--line);
+    background: color-mix(in srgb, var(--surface2) 70%, transparent);
+    padding: 0.8rem 1rem;
+    color: var(--ink);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  .field::placeholder {
+    color: var(--muted);
+    opacity: 0.8;
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--purple) 22%, transparent);
+  }
+
+  .shadow-glow {
+    box-shadow: var(--card-glow);
+  }
+  .hover-shadow-glow:hover {
+    box-shadow: var(--card-glow);
+  }
+
+  .kbd {
+    border: 1px solid var(--line);
+    border-radius: 0.4rem;
+    background: var(--surface2);
+    padding: 0.1rem 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  /* Background layers */
+  .bg-grid {
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 56px 56px;
+    -webkit-mask-image: radial-gradient(ellipse at 50% 25%, #000 25%, transparent 78%);
+    mask-image: radial-gradient(ellipse at 50% 25%, #000 25%, transparent 78%);
+  }
+  .blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(90px);
+    opacity: var(--blob-opacity);
+    animation: drift 18s ease-in-out infinite;
+    will-change: transform;
+  }
+  .blob-purple {
+    width: 34rem;
+    height: 34rem;
+    left: -9rem;
+    top: -7rem;
+    background: var(--purple);
+  }
+  .blob-blue {
+    width: 30rem;
+    height: 30rem;
+    right: -7rem;
+    top: 24%;
+    background: var(--blue);
+    animation-duration: 23s;
+    animation-delay: -6s;
+  }
+  .blob-green {
+    width: 24rem;
+    height: 24rem;
+    left: 38%;
+    bottom: -9rem;
+    background: var(--mint);
+    opacity: calc(var(--blob-opacity) * 0.7);
+    animation-duration: 27s;
+    animation-delay: -12s;
+  }
+  .spotlight {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 600px;
+    height: 600px;
+    border-radius: 9999px;
+    background: radial-gradient(circle, color-mix(in srgb, var(--purple) 20%, transparent), transparent 65%);
+    will-change: transform;
+  }
+
+  .pulse-dot {
+    position: relative;
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px;
+    background: var(--mint);
+  }
+  .pulse-dot::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--mint);
+    animation: pulse-ring 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  .caret {
+    display: inline-block;
+    width: 0.55em;
+    height: 1.05em;
+    margin-left: 0.2em;
+    vertical-align: -0.15em;
+    background: var(--mint);
+    animation: blink 1s steps(1) infinite;
+  }
+
+  .marquee {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+    animation: marquee 45s linear infinite;
+  }
+  .marquee:hover .marquee-track {
+    animation-play-state: paused;
+  }
+
+  .check-draw path {
+    stroke-dasharray: 30;
+    stroke-dashoffset: 30;
+    animation: draw 0.5s ease forwards;
+  }
+  .pop-in {
+    animation: pop 0.18s ease-out;
+  }
+}
+
+@keyframes grad-pan {
+  to {
+    background-position: 100% 0;
+  }
+}
+@keyframes drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(40px, -30px, 0) scale(1.12);
+  }
+}
+@keyframes pulse-ring {
+  75%,
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+@keyframes blink {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+/* Circular theme-change reveal (View Transitions API) */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+::view-transition-old(root) {
+  z-index: 1;
+}
+::view-transition-new(root) {
+  z-index: 2;
+}
+
+@media (max-width: 640px) {
+  .blob {
+    filter: blur(60px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .blob,
+  .text-grad,
+  .marquee-track,
+  .pulse-dot::after,
+  .caret,
+  .pop-in {
+    animation: none !important;
+  }
+  .marquee {
+    overflow-x: auto;
+  }
+}
