@@ -1,7 +1,6 @@
 // Your personal details. Edit this file to change text across the site.
 // Secrets and contact details come from .env (see .env.example).
 const env = import.meta.env;
-const digits = (value = '') => String(value).replace(/\D/g, '');
 
 export const profile = {
   name: 'Muhammad Ali',
@@ -33,8 +32,7 @@ export const profile = {
 
   // Filled from .env. Empty values hide the matching buttons.
   email: (env.VITE_CONTACT_EMAIL || '').trim(),
-  whatsapp: digits(env.VITE_WHATSAPP_NUMBER),
-  whatsappMessage: 'Hi Muhammad, I found your portfolio and would like to get in touch.',
+  discord: (env.VITE_DISCORD_USERNAME || '').trim(),
   web3formsKey: (env.VITE_WEB3FORMS_KEY || '').trim(),
 
   // Put your PDF in /public with this file name, then set VITE_CV_AVAILABLE=true
@@ -45,5 +43,3 @@ export const profile = {
   },
 };
 
-export const whatsappUrl = () =>
-  `https://wa.me/${profile.whatsapp}?text=${encodeURIComponent(profile.whatsappMessage)}`;

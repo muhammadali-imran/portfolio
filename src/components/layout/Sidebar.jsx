@@ -50,7 +50,7 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
         border-r border-line bg-surface/70 backdrop-blur-xl lg:flex xl:w-60
       "
     >
-      <div className="flex justify-center px-6 pt-8 xl:justify-start">
+      <div className="flex flex-col items-center gap-3 px-4 pt-8 xl:flex-row xl:items-center xl:justify-between xl:px-6">
         <a
           href="#home"
           aria-label={`${profile.name}, back to top`}
@@ -59,11 +59,8 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
           <span className="text-grad">{profile.monogram}</span>
           <span className="text-neo-mint">.</span>
         </a>
-        
-        <div className="flex justify-center xl:justify-start">
-          <ThemeToggle />
-        </div>
-        
+
+        <ThemeToggle />
       </div>
 
       <nav ref={nav} aria-label="Primary" className="relative mt-12 px-3 xl:px-4">
@@ -120,3 +117,4 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
     </aside>
   );
 }
+
