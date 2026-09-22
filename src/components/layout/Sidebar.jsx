@@ -8,31 +8,40 @@ import CvButton from '../ui/CvButton';
 import SocialLinks from '../ui/SocialLinks';
 import { SearchIcon } from '../ui/Icons';
 
-// Desktop navigation. Full 240px sidebar from xl, icon-only 88px rail at lg. Hidden below lg.
 export default function Sidebar({ active, ready, onOpenPalette }) {
   const nav = useRef(null);
   const indicator = useRef(null);
   const items = useRef({});
 
+  // Calculate position using relative bounding rectangles
   const place = useCallback(
-    (duration) => {
-      const el = items.current[active];
-      const ind = indicator.current;
-      if (!el || !ind || !el.offsetHeight) return;
+    (duration = 0.45) => {
+      const navEl = nav.current;
+      const activeEl = items.current[active];
+      const indEl = indicator.current;
 
-      gsap.to(ind, {
-        y: el.offsetTop,
-        height: el.offsetHeight,
+      if (!navEl || !activeEl || !indEl) return;
+
+      const navRect = navEl.getBoundingClientRect();
+      const activeRect = activeEl.getBoundingClientRect();
+
+      // Exact pixel offset of the active item relative to the <nav> container
+      const relativeY = activeRect.top - navRect.top;
+      const height = activeRect.height;
+
+      gsap.to(indEl, {
+        y: relativeY,
+        height: height,
         opacity: 1,
-        duration,
+        duration: prefersReducedMotion() ? 0 : duration,
         ease: 'power3.out',
         overwrite: 'auto',
       });
     },
-    [active]
+    [active],
   );
 
-  // Slide the highlight smoothly to the active link.
+  // Trigger movement whenever active link updates
   useGSAP(
     () => {
       place(prefersReducedMotion() ? 0 : 0.45);
@@ -40,7 +49,7 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
     { dependencies: [active] },
   );
 
-  // Re-measure when the sidebar changes size (e.g. crossing the xl breakpoint)
+  // Re-measure on window/sidebar resize
   useEffect(() => {
     const el = nav.current;
     if (!el || typeof ResizeObserver === 'undefined') return undefined;
@@ -51,7 +60,7 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
     return () => observer.disconnect();
   }, [place]);
 
-  // Links slide in once the intro has finished.
+  // Entrance animation on load
   useGSAP(
     () => {
       if (!ready || prefersReducedMotion()) return;
@@ -94,7 +103,7 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
           aria-hidden="true"
           className="
             absolute inset-x-3 top-0 rounded-2xl bg-neo-purple/12 opacity-0 
-            ring-1 ring-neo-purple/30 xl:inset-x-4
+            ring-1 ring-neo-purple/30 xl:inset-x-4 pointer-events-none
           "
         />
         <ul className="flex flex-col gap-1">
