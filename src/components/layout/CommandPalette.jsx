@@ -106,7 +106,7 @@ function Dialog({ onClose }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[90] flex items-start justify-center bg-black/50 px-4 pt-[14vh] backdrop-blur-sm" onMouseDown={onClose}>
+    <div className="fixed inset-0 z-90 flex items-start justify-center bg-black/50 px-4 pt-[14vh] backdrop-blur-sm" onMouseDown={onClose}>
       <div
         role="dialog"
         aria-modal="true"

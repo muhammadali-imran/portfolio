@@ -24,7 +24,7 @@ export default function Loader({ onReveal, onDone }) {
       ref={root}
       role="status"
       aria-label="Loading portfolio"
-      className="fixed inset-0 z-[100] grid place-items-center bg-canvas"
+      className="fixed inset-0 z-100 grid place-items-center bg-canvas"
     >
       <div className="ld-inner text-center">
         <div className="flex justify-center font-display text-8xl font-extrabold leading-none">
@@ -37,7 +37,7 @@ export default function Loader({ onReveal, onDone }) {
             <span className="ld-letter block text-neo-mint">.</span>
           </span>
         </div>
-        <div className="mx-auto mt-6 h-[3px] w-40 overflow-hidden rounded-full bg-line">
+        <div className="mx-auto mt-6 h-0.75 w-40 overflow-hidden rounded-full bg-line">
           <div
             className="ld-bar h-full origin-left"
             style={{ backgroundImage: 'linear-gradient(90deg, var(--purple), var(--blue), var(--mint))' }}

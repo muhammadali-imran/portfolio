@@ -45,7 +45,10 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
   return (
     <aside
       aria-label="Site sidebar"
-      className="fixed inset-y-0 left-0 z-40 hidden w-[88px] flex-col overflow-y-auto border-r border-line bg-surface/70 backdrop-blur-xl lg:flex xl:w-[240px]"
+      className="
+        fixed inset-y-0 left-0 z-40 hidden w-22 flex-col overflow-y-auto 
+        border-r border-line bg-surface/70 backdrop-blur-xl lg:flex xl:w-60
+      "
     >
       <div className="flex justify-center px-6 pt-8 xl:justify-start">
         <a
@@ -62,7 +65,10 @@ export default function Sidebar({ active, ready, onOpenPalette }) {
         <span
           ref={indicator}
           aria-hidden="true"
-          className="absolute inset-x-3 top-0 rounded-2xl bg-neo-purple/12 opacity-0 ring-1 ring-neo-purple/30 xl:inset-x-4"
+          className="
+            absolute inset-x-3 top-0 rounded-2xl bg-neo-purple/12 opacity-0 
+            ring-1 ring-neo-purple/30 xl:inset-x-4
+          "
           style={{ height: 0 }}
         />
         <ul className="flex flex-col gap-1">

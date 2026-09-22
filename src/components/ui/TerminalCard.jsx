@@ -59,7 +59,7 @@ export default function TerminalCard({ ready, className = '' }) {
             <div key={line.text} className="t-row flex gap-3">
               <span className={`select-none ${line.type === 'cmd' ? 'text-neo-green' : 'text-transparent'}`}>$</span>
               <span
-                className={`min-w-0 break-words ${
+                className={`min-w-0 wrap-break-word ${
                   line.type === 'cmd' ? 'text-ink' : line.type === 'ok' ? 'text-neo-green' : 'text-muted'
                 }`}
               >

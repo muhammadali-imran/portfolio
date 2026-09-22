@@ -81,7 +81,7 @@ export default function App() {
     <ThemeProvider>
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[110] focus:rounded-full focus:bg-neo-purple focus:px-4 focus:py-2 focus:text-white"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-110 focus:rounded-full focus:bg-neo-purple focus:px-4 focus:py-2 focus:text-white"
       >
         Skip to content
       </a>
@@ -96,7 +96,7 @@ export default function App() {
         <AvailabilityBadge />
       </div>
 
-      <div className="lg:pl-[88px] xl:pl-[240px]">
+      <div className="lg:pl-22 xl:pl-60">
         <main id="main">
           <Hero ready={revealed} />
           <About />
