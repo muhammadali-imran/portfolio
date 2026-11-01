@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { ScrollTrigger } from './lib/gsap';
 import { prefersReducedMotion } from './lib/motion';
 import { ThemeProvider } from './hooks/useTheme';
@@ -109,6 +110,7 @@ export default function App() {
 
       <CommandPalette open={paletteOpen} onClose={closePalette} />
       {!introDone && <Loader onReveal={handleReveal} onDone={handleIntroDone} />}
+      <Analytics />
     </ThemeProvider>
   );
 }
