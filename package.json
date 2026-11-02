@@ -8,7 +8,14 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "stats": "node scripts/fetch-github.mjs"
+    "stats": "node scripts/fetch-github.mjs",
+    "lint:fix": "eslint . --fix",
+    "verify": "node scripts/verify/run.mjs",
+    "verify:list": "node scripts/verify/run.mjs --list",
+    "verify:test": "node --test \"scripts/verify/__tests__/*.test.mjs\" \".claude/hooks/*.test.mjs\"",
+    "verify:dist": "node scripts/verify/dist.mjs",
+    "check": "npm run lint && npm run verify && npm run verify:test && npm run build && npm run verify:dist",
+    "prepare": "node scripts/install-hooks.mjs"
   },
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.1.0",
