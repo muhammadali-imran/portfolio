@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { profile } from '../../data/profile';
 import { scrollToId } from '../../lib/motion';
-import { useTheme } from '../../hooks/useTheme';
 import { NAV } from './nav';
 import { SearchIcon } from '../ui/Icons';
 
@@ -10,7 +9,6 @@ type PaletteItem = { id: string; group: string; label: string; keepOpen?: boolea
 type DialogProps = Pick<CommandPaletteProps, 'onClose'>;
 
 function Dialog({ onClose }: DialogProps) {
-  const { theme, toggle } = useTheme();
   const [query, setQuery] = useState('');
   const [index, setIndex] = useState(0);
   const [notice, setNotice] = useState('');
@@ -22,12 +20,6 @@ function Dialog({ onClose }: DialogProps) {
     };
     const list: PaletteItem[] = NAV.map((n) => ({ id: `go-${n.id}`, group: 'Go to', label: n.label, run: () => scrollToId(n.id) }));
 
-    list.push({
-      id: 'theme',
-      group: 'Action',
-      label: theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme',
-      run: () => toggle(),
-    });
     if (profile.cv.enabled) {
       list.push({
         id: 'cv',
@@ -84,7 +76,7 @@ function Dialog({ onClose }: DialogProps) {
     list.push({ id: 'gh', group: 'Link', label: 'Open GitHub profile', run: openLink(profile.github) });
     list.push({ id: 'li', group: 'Link', label: 'Open LinkedIn profile', run: openLink(profile.linkedin) });
     return list;
-  }, [theme, toggle]);
+  }, []);
 
   const results = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -155,7 +147,7 @@ function Dialog({ onClose }: DialogProps) {
             aria-activedescendant={results[index] ? `palette-${results[index].id}` : undefined}
             aria-label="Search sections and actions"
             placeholder="Search sections and actions"
-            className="w-full bg-transparent py-4 text-ink outline-none placeholder:text-muted"
+            className="w-full bg-transparent py-4 text-ink placeholder:text-muted focus-visible:outline-2 focus-visible:outline-neo-mint"
           />
           <kbd className="kbd">Esc</kbd>
         </div>

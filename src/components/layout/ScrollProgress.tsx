@@ -1,11 +1,14 @@
 import { useRef } from 'react';
 import { gsap, useGSAP } from '../../lib/gsap';
+import { prefersReducedMotion } from '../../lib/motion';
 
 // Thin gradient bar at the top that fills as you scroll.
 export default function ScrollProgress() {
   const bar = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
+    if (prefersReducedMotion()) return;
+
     gsap.to(bar.current, {
       scaleX: 1,
       ease: 'none',

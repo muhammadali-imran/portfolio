@@ -1,17 +1,23 @@
 import { useRef } from 'react';
 import { gsap, useGSAP } from '../../lib/gsap';
-import { profile } from '../../data/profile';
+import { prefersReducedMotion } from '../../lib/motion';
+import Jellyfish from '../jelly/Jellyfish';
 
 type LoaderProps = { onReveal: () => void; onDone: () => void };
 
-// First-visit intro: monogram rises, a bar fills, then the curtain lifts off the page.
 export default function Loader({ onReveal, onDone }: LoaderProps) {
   const root = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
+      if (prefersReducedMotion()) {
+        onReveal();
+        onDone();
+        return;
+      }
+
       const tl = gsap.timeline({ onComplete: onDone });
-      tl.from('.ld-letter', { yPercent: 120, duration: 0.7, stagger: 0.12, ease: 'expo.out' })
+      tl.from('.ld-inner', { y: 16, autoAlpha: 0, duration: 0.55, ease: 'power3.out' })
         .from('.ld-bar', { scaleX: 0, duration: 0.9, ease: 'power2.inOut' }, '<+=0.1')
         .to('.ld-inner', { autoAlpha: 0, duration: 0.25 }, '+=0.15')
         .addLabel('curtain')
@@ -29,16 +35,8 @@ export default function Loader({ onReveal, onDone }: LoaderProps) {
       className="fixed inset-0 z-100 grid place-items-center bg-canvas"
     >
       <div className="ld-inner text-center">
-        <div className="flex justify-center font-display text-8xl font-extrabold leading-none">
-          {profile.monogram.split('').map((char) => (
-            <span key={char} className="block overflow-hidden pb-2">
-              <span className="ld-letter text-grad block">{char}</span>
-            </span>
-          ))}
-          <span className="block overflow-hidden pb-2">
-            <span className="ld-letter block text-neo-mint">.</span>
-          </span>
-        </div>
+        <Jellyfish className="mx-auto w-28 text-neo-mint" />
+        <p className="mt-4 font-mono text-xs uppercase tracking-[0.22em] text-muted">Entering the deep</p>
         <div className="mx-auto mt-6 h-0.75 w-40 overflow-hidden rounded-full bg-line">
           <div
             className="ld-bar h-full origin-left"

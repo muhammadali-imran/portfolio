@@ -1,34 +1,13 @@
-import { useEffect, useRef } from 'react';
-import { gsap } from '../../lib/gsap';
-import { hasFinePointer, prefersReducedMotion } from '../../lib/motion';
+import Jellyfish from '../jelly/Jellyfish';
 
-// Fixed backdrop: grid, drifting colour blobs and a soft spotlight that trails the cursor.
 export default function Background() {
-  const spot = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = spot.current;
-    if (!el || !hasFinePointer() || prefersReducedMotion()) return undefined;
-
-    gsap.set(el, { x: window.innerWidth / 2 - 300, y: window.innerHeight / 3 - 300 });
-    const xTo = gsap.quickTo(el, 'x', { duration: 0.7, ease: 'power3.out' });
-    const yTo = gsap.quickTo(el, 'y', { duration: 0.7, ease: 'power3.out' });
-    const move = (e: PointerEvent) => {
-      xTo(e.clientX - 300);
-      yTo(e.clientY - 300);
-    };
-
-    window.addEventListener('pointermove', move, { passive: true });
-    return () => window.removeEventListener('pointermove', move);
-  }, []);
-
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden">
       <div className="bg-grid absolute inset-0" />
-      <div className="blob blob-purple" />
-      <div className="blob blob-blue" />
       <div className="blob blob-green" />
-      <div ref={spot} className="spotlight" />
+      <div className="absolute -right-32 top-[18%] size-120 rounded-full bg-neo-red/5 blur-[100px]" />
+      <Jellyfish className="absolute left-[5%] top-[22%] w-20 opacity-20 [animation-delay:-3s]" />
+      <Jellyfish className="absolute right-[8%] top-[68%] w-28 opacity-15 [animation-delay:-6s]" />
     </div>
   );
 }

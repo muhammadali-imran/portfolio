@@ -2,6 +2,8 @@
 
 # Muhammad Ali — Portfolio
 
+A dark emerald portfolio with a responsive sticky navbar, lightweight jellyfish artwork, and sections for projects, skills, experience, and contact.
+
 [Live Demo](https://portfolio-4xn93jp7k-imranmuhammadali633-5556s-projects.vercel.app/) · [Report Issue](https://github.com/muhammadali-imran/portfolio/issues)
 
 <br />
@@ -89,12 +91,13 @@ GH_TOKEN=your_token npm run stats
 │   ├── styles/index.css                 # Tailwind import, theme tokens, keyframes
 │   ├── lib/                             # GSAP registration & motion helpers (.ts)
 │   ├── data/                            # Typed profile, projects, skills and experience; generated stats JSON
-│   ├── hooks/                           # Typed custom React hooks (theme, scroll spy, magnetic, tilt)
+│   ├── hooks/                           # Typed custom React hooks (scroll spy, magnetic, tilt)
 │   ├── components/
-│   │   ├── layout/                      # Sidebar, TopBar, MobileMenu, Footer, CommandPalette
+│   │   ├── layout/                      # Navbar, MobileMenu, Footer, CommandPalette
+│   │   ├── jelly/                       # Lightweight decorative SVG artwork
 │   │   └── ui/                          # Reusable UI primitives (Button, Tag, TerminalCard)
 │   └── sections/                        # Page sections (Hero, About, Stack, Projects, Contact)
-├── index.html                           # SEO tags & inline dark theme script
+├── index.html                           # SEO and social metadata
 └── vite.config.js                       # Vite configuration
 
 ```

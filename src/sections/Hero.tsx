@@ -6,6 +6,7 @@ import Button from '../components/ui/Button';
 import CvButton from '../components/ui/CvButton';
 import AvailabilityBadge from '../components/ui/AvailabilityBadge';
 import TerminalCard from '../components/ui/TerminalCard';
+import Jellyfish from '../components/jelly/Jellyfish';
 import { ArrowRightIcon } from '../components/ui/Icons';
 
 type HeroProps = { ready: boolean };
@@ -41,16 +42,16 @@ export default function Hero({ ready }: HeroProps) {
       id="home"
       ref={root}
       aria-label="Introduction"
-      className="relative flex min-h-screen items-center px-6 pb-16 pt-28 sm:px-10 lg:px-14 lg:pt-16"
+      className="relative flex min-h-[calc(100svh-4.5rem)] items-center px-6 pb-16 pt-20 sm:px-10 lg:px-14"
     >
-      <div className="mx-auto grid w-full max-w-7xl items-center gap-14 lg:grid-cols-[1.15fr_0.85fr]">
+      <div className="mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14">
         <div className="min-w-0">
           <div className="h-fade mb-6 lg:hidden">
             <AvailabilityBadge />
           </div>
 
-          <p className="h-fade flex items-center gap-4 font-mono text-sm text-neo-blue">
-            <span aria-hidden="true" className="h-px w-10 bg-neo-blue/60" />
+          <p className="h-fade flex items-center gap-4 font-mono text-xs uppercase tracking-[0.18em] text-neo-mint sm:text-sm">
+            <span aria-hidden="true" className="h-px w-10 bg-neo-mint/60" />
             Full stack developer and software engineering student
           </p>
 
@@ -68,7 +69,7 @@ export default function Hero({ ready }: HeroProps) {
             </span>
           </h1>
 
-          <p className="h-fade mt-7 text-2xl font-semibold text-neo-red">
+          <p className="h-fade mt-7 text-xl font-semibold text-neo-red sm:text-2xl">
             <span className="sr-only">{profile.roles.join(', ')}</span>
             <span aria-hidden="true" ref={role}>
               {profile.roles[0]}
@@ -89,7 +90,14 @@ export default function Hero({ ready }: HeroProps) {
           </div>
         </div>
 
-        <TerminalCard ready={ready} className="h-card w-full max-w-xl lg:justify-self-end" />
+        <div className="relative mx-auto w-full max-w-lg lg:justify-self-end">
+          <div className="relative mb-3 flex h-36 items-center justify-center sm:h-44">
+            <div aria-hidden="true" className="absolute size-40 rounded-full border border-neo-mint/10 sm:size-52" />
+            <div aria-hidden="true" className="absolute size-28 rounded-full border border-neo-mint/10 sm:size-36" />
+            <Jellyfish className="relative z-10 h-36 w-32 text-neo-mint sm:h-44 sm:w-40" />
+          </div>
+          <TerminalCard ready={ready} className="h-card w-full" />
+        </div>
       </div>
     </section>
   );
