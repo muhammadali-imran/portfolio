@@ -134,6 +134,17 @@
     -webkit-mask-image: radial-gradient(ellipse at 50% 25%, #000 25%, transparent 78%);
     mask-image: radial-gradient(ellipse at 50% 25%, #000 25%, transparent 78%);
   }
+  .background-emerald-light {
+    background:
+      radial-gradient(ellipse at 50% 5%, rgb(50 217 149 / 0.12), transparent 52%),
+      radial-gradient(ellipse at 5% 68%, rgb(23 168 115 / 0.08), transparent 42%);
+  }
+  .background-raspberry-glow {
+    background: radial-gradient(ellipse at 100% 20%, rgb(242 118 162 / 0.07), transparent 38%);
+  }
+  .background-vignette {
+    background: radial-gradient(ellipse at 50% 38%, transparent 25%, rgb(2 15 12 / 0.48) 100%);
+  }
   .blob {
     position: absolute;
     border-radius: 9999px;
@@ -182,6 +193,9 @@
   .jellyfish-float {
     animation: jellyfish-float 8s ease-in-out infinite;
     transform-origin: center;
+  }
+  .jellyfish-field-paused .jellyfish-float {
+    animation-play-state: paused;
   }
   .jellyfish-tentacle {
     animation: jellyfish-sway 5s ease-in-out infinite alternate;
@@ -325,8 +339,12 @@
   .marquee-track,
   .pulse-dot::after,
   .caret,
+  .check-draw path,
   .pop-in {
     animation: none !important;
+  }
+  .check-draw path {
+    stroke-dashoffset: 0;
   }
   .marquee {
     overflow-x: auto;

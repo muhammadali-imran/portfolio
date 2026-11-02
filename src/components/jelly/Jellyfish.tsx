@@ -4,7 +4,7 @@ export default function Jellyfish({ className = '' }: JellyfishProps) {
   return (
     <svg
       aria-hidden="true"
-      className={`jellyfish-glow jellyfish-float text-neo-mint ${className}`}
+      className={`jellyfish-glow jellyfish-float ${className}`}
       viewBox="0 0 160 190"
       fill="none"
     >
