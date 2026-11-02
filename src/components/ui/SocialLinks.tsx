@@ -28,8 +28,8 @@ export default function SocialLinks({ className = '', vertical = false }: Social
   const links: (SocialLink | false)[] = [
     { id: 'github', label: 'GitHub', href: profile.github, Icon: FaGithub },
     { id: 'linkedin', label: 'LinkedIn', href: profile.linkedin, Icon: FaLinkedinIn },
-    profile.discord && { id: 'discord', label: copied ? 'Copied!' : 'Discord', Icon: FaDiscord, onClick: copyDiscord },
-    profile.email && { id: 'email', label: 'Email', href: `mailto:${profile.email}`, Icon: MailIcon },
+    profile.discord ? { id: 'discord', label: copied ? 'Copied!' : 'Discord', Icon: FaDiscord, onClick: copyDiscord } : false,
+    profile.email ? { id: 'email', label: 'Email', href: `mailto:${profile.email}`, Icon: MailIcon } : false,
   ];
 
   return (

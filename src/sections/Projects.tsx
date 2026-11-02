@@ -9,9 +9,10 @@ import GitHubActivity from './GitHubActivity';
 import { ArrowUpRightIcon } from '../components/ui/Icons';
 import { useBatchReveal } from '../hooks/useBatchReveal';
 import { useTilt } from '../hooks/useTilt';
-import type { Project } from '../data/projects';
+import type { Project, ProjectStatus } from '../data/projects';
+import type { Tone } from '../data/skills';
 
-const statusTone = {
+const statusTone: Record<ProjectStatus, Tone | 'muted'> = {
   'Team project': 'purple',
   'In progress': 'blue',
   'Learning project': 'muted',

@@ -3,16 +3,57 @@ import { profile } from '../data/profile';
 
 type ContributionDay = { d: string; c: number; l: number };
 type GitHubStats = {
-  updatedAt: string | null;
-  login?: string;
-  followers?: number;
-  publicRepos?: number;
-  totalContributions?: number;
-  weeks?: ContributionDay[][];
-  languages?: { name: string; count: number; percent: number }[];
+  updatedAt: string;
+  login: string;
+  followers: number;
+  publicRepos: number;
+  totalContributions: number;
+  weeks: ContributionDay[][];
+  languages: { name: string; count: number; percent: number }[];
 };
 
-const githubStats = stats as GitHubStats;
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return typeof value === 'object' && value !== null;
+}
+
+function isGitHubStats(value: unknown): value is GitHubStats {
+  if (
+    !isRecord(value) ||
+    typeof value.updatedAt !== 'string' ||
+    typeof value.login !== 'string' ||
+    typeof value.followers !== 'number' ||
+    typeof value.publicRepos !== 'number' ||
+    typeof value.totalContributions !== 'number' ||
+    !Array.isArray(value.weeks) ||
+    !Array.isArray(value.languages)
+  ) {
+    return false;
+  }
+
+  const validWeeks = value.weeks.every(
+    (week) =>
+      Array.isArray(week) &&
+      week.every(
+        (day) =>
+          isRecord(day) &&
+          typeof day.d === 'string' &&
+          typeof day.c === 'number' &&
+          typeof day.l === 'number',
+      ),
+  );
+  const validLanguages = value.languages.every(
+    (language) =>
+      isRecord(language) &&
+      typeof language.name === 'string' &&
+      typeof language.count === 'number' &&
+      typeof language.percent === 'number',
+  );
+
+  return validWeeks && validLanguages;
+}
+
+const rawStats: unknown = stats;
+const githubStats = isGitHubStats(rawStats) ? rawStats : null;
 
 // Opacity of each contribution level (0 = none).
 const LEVEL = [0, 28, 50, 75, 100];
@@ -22,7 +63,7 @@ const formatDate = (iso: string) =>
 
 // Renders data written by scripts/fetch-github.mjs. Hides itself until that file has real data.
 export default function GitHubActivity() {
-  if (!githubStats.updatedAt || !Array.isArray(githubStats.weeks) || githubStats.weeks.length === 0) return null;
+  if (!githubStats || githubStats.weeks.length === 0) return null;
 
   const langs = (githubStats.languages || []).slice(0, 5);
   const langColors = ['var(--purple)', 'var(--blue)', 'var(--mint)', 'var(--red)', 'var(--muted)'];
@@ -33,7 +74,7 @@ export default function GitHubActivity() {
         <div>
           <h3 className="font-display text-4xl font-bold uppercase tracking-tight">GitHub activity</h3>
           <p className="mt-1 text-muted">
-            {githubStats.totalContributions?.toLocaleString('en-US') ?? 0} contributions in the last year
+            {githubStats.totalContributions.toLocaleString('en-US')} contributions in the last year
           </p>
         </div>
         <a
@@ -46,7 +87,7 @@ export default function GitHubActivity() {
         </a>
       </div>
 
-      <div className="mt-6 overflow-x-auto pb-2" role="img" aria-label={`Contribution calendar: ${githubStats.totalContributions ?? 0} contributions in the last year`}>
+      <div className="mt-6 overflow-x-auto pb-2" role="img" aria-label={`Contribution calendar: ${githubStats.totalContributions} contributions in the last year`}>
         <div className="flex w-max gap-[3px]" aria-hidden="true">
           {githubStats.weeks.map((week, wi) => (
             <div key={wi} className="flex flex-col gap-[3px]">
@@ -72,11 +113,11 @@ export default function GitHubActivity() {
         <dl className="flex gap-8">
           <div>
             <dt className="text-sm text-muted">Public repos</dt>
-            <dd className="font-display text-3xl font-bold">{githubStats.publicRepos ?? 0}</dd>
+            <dd className="font-display text-3xl font-bold">{githubStats.publicRepos}</dd>
           </div>
           <div>
             <dt className="text-sm text-muted">Followers</dt>
-            <dd className="font-display text-3xl font-bold">{githubStats.followers ?? 0}</dd>
+            <dd className="font-display text-3xl font-bold">{githubStats.followers}</dd>
           </div>
         </dl>
 

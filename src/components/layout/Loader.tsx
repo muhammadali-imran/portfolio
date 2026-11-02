@@ -15,7 +15,7 @@ export default function Loader({ onReveal, onDone }: LoaderProps) {
         .from('.ld-bar', { scaleX: 0, duration: 0.9, ease: 'power2.inOut' }, '<+=0.1')
         .to('.ld-inner', { autoAlpha: 0, duration: 0.25 }, '+=0.15')
         .addLabel('curtain')
-        .call(onReveal, null, 'curtain')
+        .call(onReveal, [], 'curtain')
         .to(root.current, { yPercent: -100, duration: 0.85, ease: 'power4.inOut' }, 'curtain');
     },
     { scope: root },

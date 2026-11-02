@@ -17,7 +17,9 @@ function Dialog({ onClose }: DialogProps) {
   const input = useRef<HTMLInputElement>(null);
 
   const items = useMemo(() => {
-    const openLink = (href: string) => () => window.open(href, '_blank', 'noopener,noreferrer');
+    const openLink = (href: string) => () => {
+      window.open(href, '_blank', 'noopener,noreferrer');
+    };
     const list: PaletteItem[] = NAV.map((n) => ({ id: `go-${n.id}`, group: 'Go to', label: n.label, run: () => scrollToId(n.id) }));
 
     list.push({

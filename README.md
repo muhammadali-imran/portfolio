@@ -21,7 +21,7 @@
 | Area | Choice |
 | :--- | :--- |
 | **Framework** | React 18 + Vite 5 |
-| **Language** | TypeScript/TSX (incremental migration; remaining JavaScript is tracked in workspace tasks T-41/T-42) |
+| **Language** | TypeScript/TSX with strict type checking |
 | **Styling** | Tailwind CSS v4 (`@tailwindcss/vite`, CSS-first theme tokens) |
 | **Animation** | GSAP 3 + `@gsap/react` (ScrollTrigger, SplitText, TextPlugin, ScrambleTextPlugin) |
 | **Fonts** | Barlow Condensed (display), Outfit (body), JetBrains Mono (code) via Fontsource |
@@ -87,9 +87,9 @@ GH_TOKEN=your_token npm run stats
 │   ├── main.tsx                         # React entrypoint & font setup
 │   ├── vite-env.d.ts                    # Typed Vite environment variables
 │   ├── styles/index.css                 # Tailwind import, theme tokens, keyframes
-│   ├── lib/                             # GSAP registration & motion helpers
-│   ├── data/                            # Profile, projects, skills, experience, github-stats.json
-│   ├── hooks/                           # Custom React hooks (theme, scroll spy, magnetic, tilt)
+│   ├── lib/                             # GSAP registration & motion helpers (.ts)
+│   ├── data/                            # Typed profile, projects, skills and experience; generated stats JSON
+│   ├── hooks/                           # Typed custom React hooks (theme, scroll spy, magnetic, tilt)
 │   ├── components/
 │   │   ├── layout/                      # Sidebar, TopBar, MobileMenu, Footer, CommandPalette
 │   │   └── ui/                          # Reusable UI primitives (Button, Tag, TerminalCard)

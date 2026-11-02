@@ -37,14 +37,14 @@ export default function Contact() {
   };
 
   const links: (ContactLink | false)[] = [
-    profile.email && { id: 'email', label: 'Email', value: profile.email, href: `mailto:${profile.email}`, Icon: MailIcon },
-    profile.discord && {
+    profile.email ? { id: 'email', label: 'Email', value: profile.email, href: `mailto:${profile.email}`, Icon: MailIcon } : false,
+    profile.discord ? {
       id: 'discord',
       label: 'Discord',
       value: discordCopied ? 'Copied!' : profile.discord,
       onClick: copyDiscord,
       Icon: FaDiscord,
-    },
+    } : false,
     { id: 'linkedin', label: 'LinkedIn', value: 'muhammadali-imran1972', href: profile.linkedin, Icon: FaLinkedinIn },
     { id: 'github', label: 'GitHub', value: profile.githubUser, href: profile.github, Icon: FaGithub },
   ];

@@ -23,7 +23,7 @@ function Panel({ active, onClose }: PanelProps) {
     const html = document.documentElement;
     const prevOverflow = html.style.overflow;
     html.style.overflow = 'hidden';
-    el.querySelector('a[href]')?.focus();
+    el.querySelector<HTMLAnchorElement>('a[href]')?.focus();
 
     const onKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -31,7 +31,7 @@ function Panel({ active, onClose }: PanelProps) {
         return;
       }
       if (e.key !== 'Tab') return;
-      const nodes = el.querySelectorAll(FOCUSABLE);
+      const nodes = el.querySelectorAll<HTMLElement>(FOCUSABLE);
       if (!nodes.length) return;
       const first = nodes[0];
       const last = nodes[nodes.length - 1];
