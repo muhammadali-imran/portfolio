@@ -21,6 +21,7 @@
 | Area | Choice |
 | :--- | :--- |
 | **Framework** | React 18 + Vite 5 |
+| **Language** | TypeScript/TSX (incremental migration; remaining JavaScript is tracked in workspace tasks T-41/T-42) |
 | **Styling** | Tailwind CSS v4 (`@tailwindcss/vite`, CSS-first theme tokens) |
 | **Animation** | GSAP 3 + `@gsap/react` (ScrollTrigger, SplitText, TextPlugin, ScrambleTextPlugin) |
 | **Fonts** | Barlow Condensed (display), Outfit (body), JetBrains Mono (code) via Fontsource |
@@ -54,6 +55,7 @@ npm run dev
 | `npm run build` | Builds production bundle into `dist/` |
 | `npm run preview` | Previews production build locally |
 | `npm run lint` | Runs ESLint check |
+| `npm run typecheck` | Strict-checks migrated TypeScript source |
 | `npm run stats` | Fetches GitHub stats manually (requires `GH_TOKEN`) |
 
 ---
@@ -81,8 +83,9 @@ GH_TOKEN=your_token npm run stats
 ├── public/                              # Favicon, OG image, robots.txt, CV PDF
 ├── scripts/fetch-github.mjs             # GitHub stats fetcher
 ├── src/
-│   ├── App.jsx                          # Page shell, intro, command palette shortcut
-│   ├── main.jsx                         # React entrypoint & font setup
+│   ├── App.tsx                          # Page shell, intro, command palette shortcut
+│   ├── main.tsx                         # React entrypoint & font setup
+│   ├── vite-env.d.ts                    # Typed Vite environment variables
 │   ├── styles/index.css                 # Tailwind import, theme tokens, keyframes
 │   ├── lib/                             # GSAP registration & motion helpers
 │   ├── data/                            # Profile, projects, skills, experience, github-stats.json

@@ -1,5 +1,7 @@
 import js from '@eslint/js';
 import globals from 'globals';
+import tsParser from '@typescript-eslint/parser';
+import tsPlugin from '@typescript-eslint/eslint-plugin';
 import react from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
@@ -15,7 +17,7 @@ export default [
 
   // ---- Browser source (src/) ----
   {
-    files: ['src/**/*.{js,jsx}'],
+    files: ['src/**/*.{js,jsx,ts,tsx}'],
     languageOptions: {
       ecmaVersion: 2022,
       globals: globals.browser,
@@ -31,7 +33,7 @@ export default [
 
       // Existing choices
       'react/prop-types': 'off',
-      'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      'react-refresh/only-export-components': ['warn', { allowConstantExport: true, allowExportNames: ['useTheme'] }],
 
       // Correctness
       'react-hooks/exhaustive-deps': 'warn',
@@ -61,9 +63,11 @@ export default [
       'no-restricted-imports': [
         'error',
         {
-          patterns: [
-            { group: ['gsap', 'gsap/*', '@gsap/react'], message: 'Import gsap helpers from src/lib/gsap.js so plugins are registered once.' },
+          paths: [
+            { name: 'gsap', message: 'Import gsap helpers from src/lib/gsap.js so plugins are registered once.' },
+            { name: '@gsap/react', message: 'Import gsap helpers from src/lib/gsap.js so plugins are registered once.' },
           ],
+          patterns: [{ group: ['gsap/*'], message: 'Import gsap helpers from src/lib/gsap.js so plugins are registered once.' }],
         },
       ],
       'no-restricted-syntax': [
@@ -74,11 +78,23 @@ export default [
     },
   },
 
-  // The one place allowed to import gsap directly
-  { files: ['src/lib/gsap.js'], rules: { 'no-restricted-imports': 'off' } },
+  {
+    files: ['src/**/*.{ts,tsx}'],
+    languageOptions: { parser: tsParser },
+    plugins: { '@typescript-eslint': tsPlugin },
+    rules: {
+      ...tsPlugin.configs.recommended.rules,
+      'no-undef': 'off',
+      'no-unused-vars': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { varsIgnorePattern: '^_', argsIgnorePattern: '^_', ignoreRestSiblings: true }],
+    },
+  },
 
   // Data files are plain content modules
-  { files: ['src/data/**/*.js'], rules: { 'max-lines': 'off', 'no-restricted-imports': ['error', { patterns: ['**/components/*', '**/sections/*', '**/hooks/*'] }] } },
+  { files: ['src/data/**/*.{js,ts}'], rules: { 'max-lines': 'off', 'no-restricted-imports': ['error', { patterns: ['**/components/*', '**/sections/*', '**/hooks/*'] }] } },
+
+  // The one place allowed to import gsap directly
+  { files: ['src/lib/gsap.{js,ts}'], rules: { 'no-restricted-imports': 'off' } },
 
   // ---- Node scripts, configs, hooks ----
   {
@@ -94,5 +110,5 @@ export default [
   },
 
   // ---- Optional accessibility plugin ----
-  ...(jsxA11y ? [{ ...jsxA11y.flatConfigs.recommended, files: ['src/**/*.{js,jsx}'] }] : []),
+  ...(jsxA11y ? [{ ...jsxA11y.flatConfigs.recommended, files: ['src/**/*.{js,jsx,ts,tsx}'] }] : []),
 ];
